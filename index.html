@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lista de Invitados - Alamo's Club</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#111; color:#fff; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; }
+    .container { background: rgba(0,0,0,0.75); padding:28px; border-radius:12px; width:95%; max-width:420px; box-shadow:0 6px 30px rgba(0,0,0,0.6); text-align:center; position:relative; }
+    .logo { width:80px; height:80px; object-fit:contain; margin:0 auto 8px; display:block; }
+    input, button { width:100%; padding:12px; margin-top:10px; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; }
+    button { background:#e91e63; color:#fff; font-weight:700; cursor:pointer; }
+    button:hover { opacity:0.95; }
+    #countdown { color:#f1c40f; margin-top:6px; font-weight:600; }
+    #closed { color:#ff4d4d; display:none; margin-top:10px; }
+    .small { font-size:13px; color:#ccc; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="LOGO.PNG" alt="Logo" class="logo" />
+    <h2>🎟️ Lista de Invitados</h2>
+    <p>Anota tu nombre completo y asegura tu acceso a <br><b>Alamo's Club X Halloween</b>.</p>
+
+    <div id="countdown"></div>
+
+    <form id="guestForm">
+      <input id="nombre" type="text" placeholder="Nombre completo" required autocomplete="off" />
+      <button type="submit">Registrar</button>
+    </form>
+
+    <div id="closed">🚫 Registro cerrado. Mantente atento a próximas dinámicas.</div>
+    <div class="small">Las entradas se guardan en Firebase Firestore (solo tú las verás).</div>
+  </div>
+
+  <script type="module">
+    // ---------- IMPORTS (Firebase modular SDK) ----------
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    // -------------------------------
+    // NUEVO FIREBASE CONFIG
+    // -------------------------------
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLW12w5ZznypXJYMrTNouttdX0vrG6Bzg",
+      authDomain: "alamos-club-d1847.firebaseapp.com",
+      projectId: "alamos-club-d1847",
+      storageBucket: "alamos-club-d1847.firebasestorage.app",
+      messagingSenderId: "666754924136",
+      appId: "1:666754924136:web:03b63136a94e98515d45dd",
+      measurementId: "G-MNFMT9QLBN"
+    };
+
+    // Inicializa Firebase y Firestore
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Formulario
+    const form = document.getElementById('guestForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombreEl = document.getElementById('nombre');
+      const nombre = nombreEl.value.trim();
+      if (!nombre) {
+        alert('Escribe un nombre por favor.');
+        return;
+      }
+
+      try {
+        // Guarda en la colección 'invitados'
+        await addDoc(collection(db, 'invitados'), {
+          nombre,
+          createdAt: serverTimestamp()
+        });
+        alert('🎉 Registro guardado correctamente en Firebase.');
+        form.reset();
+      } catch (err) {
+        console.error('Error guardando en Firestore:', err);
+        alert('❌ Error al guardar. Revisa la consola.');
+      }
+    });
+
+    // Contador opcional
+    const countdownEl = document.getElementById('countdown');
+    const closedEl = document.getElementById('closed');
+    let endTime = new Date("Oct 5, 2025 23:59:00").getTime();
+    const timer = setInterval(() => {
+      const now = Date.now();
+      const distance = endTime - now;
+      if (distance > 0) {
+        const days = Math.floor(distance / (1000*60*60*24));
+        const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+        const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+        const seconds = Math.floor((distance % (1000*60)) / 1000);
+        countdownEl.textContent = `⏳ Tiempo restante: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+      } else {
+        clearInterval(timer);
+        form.style.display = 'none';
+        countdownEl.style.display = 'none';
+        closedEl.style.display = 'block';
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
