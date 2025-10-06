@@ -14,12 +14,14 @@
     #countdown { color:#f1c40f; margin-top:6px; font-weight:600; }
     #closed { color:#ff4d4d; display:none; margin-top:10px; }
     .small { font-size:13px; color:#ccc; margin-top:8px; }
+    .subtitle { font-size:18px; color:#f39c12; margin:6px 0; font-weight:600; }
   </style>
 </head>
 <body>
   <div class="container">
     <img src="LOGO.PNG" alt="Logo" class="logo" />
     <h2>🎟️ Lista de Invitados 🎟️</h2>
+    <div class="subtitle">Dinámica 2</div>
     <p>Anota tu nombre completo y asegura tu acceso a: <br><b>Alamo's Club X Halloween</b>.</p>
 
     <div id="countdown"></div>
@@ -30,7 +32,7 @@
     </form>
 
     <div id="closed">🚫 Registro cerrado. Mantente atento a próximas dinámicas.</div>
-    <div class="small">🔒 Solo usamos tus datos para el registro del evento. ¡Tu privacidad está protegida!.</div>
+    <div class="small">Solo serán válidos los nombres que cumplan con los 2 puntos mencionados en la dinámica.<br> 🔒¡Tu privacidad está protegida!. 🔒</div>
   </div>
 
   <script type="module">
@@ -83,7 +85,7 @@
     // Contador opcional
     const countdownEl = document.getElementById('countdown');
     const closedEl = document.getElementById('closed');
-    let endTime = new Date("Sep 30, 2025 14:00:00").getTime();
+    let endTime = new Date("Oct 7, 2025 16:00:00").getTime();
     const timer = setInterval(() => {
       const now = Date.now();
       const distance = endTime - now;
