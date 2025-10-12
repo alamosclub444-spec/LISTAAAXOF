@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Admin - Alamo’s Club</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h2 { color: #f1c40f; }
+    button {
+      padding: 10px 15px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #e91e63;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ff4081;
+    }
+    pre {
+      text-align: left;
+      background: #222;
+      padding: 15px;
+      border-radius: 8px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h2>📋 Panel de administración - Alamo’s Club</h2>
+  <p>Desde aquí puedes ver y exportar la lista de invitados por dinámica (solo nombres).</p>
+
+  <div>
+    <button onclick="mostrarDatos()">👀 Mostrar todos</button>
+    <button onclick="filtrarDinamica1()">🎯 Dinámica 1 (29-30 Sept)</button>
+    <button onclick="filtrarDinamica2()">🎯 Dinámica 2 (6-7 Oct)</button>
+    <button onclick="filtrarDinamica3()">🎯 Dinámica 3 (17-18 Oct)</button>
+  </div>
+
+  <div>
+    <button onclick="exportarCSV()">⬇️ Exportar CSV</button>
+    <button onclick="exportarJSON()">⬇️ Exportar JSON</button>
+  </div>
+
+  <pre id="output"></pre>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLW12w5ZznypXJYMrTNouttdX0vrG6Bzg",
+      authDomain: "alamos-club-d1847.firebaseapp.com",
+      projectId: "alamos-club-d1847",
+      storageBucket: "alamos-club-d1847.firebasestorage.app",
+      messagingSenderId: "666754924136",
+      appId: "1:666754924136:web:03b63136a94e98515d45dd",
+      measurementId: "G-MNFMT9QLBN"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Mostrar todos los datos
+    async function mostrarDatos() {
+      const snapshot = await db.collection("invitados").orderBy("createdAt", "desc").get();
+      let lista = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const fecha = data.createdAt?.toDate().toLocaleString() || "sin fecha";
+        lista += `${data.nombre} - ${fecha}\n`;
+      });
+      document.getElementById("output").innerText = lista || "No hay invitados registrados.";
+    }
+
+    // --- FILTROS POR DINÁMICA ---
+
+    async function mostrarDatosPorRango(inicio, fin) {
+      const snapshot = await db.collection("invitados")
+        .where("createdAt", ">=", inicio)
+        .where("createdAt", "<=", fin)
+        .orderBy("createdAt", "asc")
+        .get();
+
+      let lista = "";
+      snapshot.forEach(doc => {
+        lista += doc.data().nombre + "\n";
+      });
+      document.getElementById("output").innerText = lista || "No hay registros en ese rango.";
+    }
+
+    // Dinámica 1: 29 - 30 de septiembre 2025
+    function filtrarDinamica1() {
+      const inicio = new Date("2025-09-29T00:00:00");
+      const fin = new Date("2025-09-30T23:59:59");
+      mostrarDatosPorRango(inicio, fin);
+    }
+
+    // Dinámica 2: 6 - 7 de octubre 2025
+    function filtrarDinamica2() {
+      const inicio = new Date("2025-10-06T00:00:00");
+      const fin = new Date("2025-10-07T23:59:59");
+      mostrarDatosPorRango(inicio, fin);
+    }
+
+    // Dinámica 3: 17 - 18 de octubre 2025
+    function filtrarDinamica3() {
+      const inicio = new Date("2025-10-17T00:00:00");
+      const fin = new Date("2025-10-18T23:59:59");
+      mostrarDatosPorRango(inicio, fin);
+    }
+
+    // --- EXPORTAR ---
+    async function exportarCSV() {
+      const snapshot = await db.collection("invitados").get();
+      let csv = "nombre,fecha\n";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const fecha = data.createdAt?.toDate().toLocaleString() || "";
+        csv += `"${data.nombre}","${fecha}"\n`;
+      });
+      descargarArchivo(csv, "invitados.csv", "text/csv");
+    }
+
+    async function exportarJSON() {
+      const snapshot = await db.collection("invitados").get();
+      let lista = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        lista.push({
+          nombre: data.nombre,
+          fecha: data.createdAt?.toDate().toISOString() || null
+        });
+      });
+      const json = JSON.stringify(lista, null, 2);
+      descargarArchivo(json, "invitados.json", "application/json");
+    }
+
+    // --- Descarga ---
+    function descargarArchivo(contenido, nombreArchivo, tipo) {
+      const blob = new Blob([contenido], { type: tipo });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = nombreArchivo;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  </script>
+</body>
+</html>

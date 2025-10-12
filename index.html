@@ -5,16 +5,94 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lista de Invitados - Alamo's Club</title>
   <style>
-    body { font-family: Arial, sans-serif; background:#111; color:#fff; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; }
-    .container { background: rgba(0,0,0,0.75); padding:28px; border-radius:12px; width:95%; max-width:420px; box-shadow:0 6px 30px rgba(0,0,0,0.6); text-align:center; position:relative; }
-    .logo { width:80px; height:80px; object-fit:contain; margin:0 auto 8px; display:block; }
-    input, button { width:100%; padding:12px; margin-top:10px; border-radius:8px; border:none; font-size:16px; box-sizing:border-box; }
-    button { background:#e91e63; color:#fff; font-weight:700; cursor:pointer; }
-    button:hover { opacity:0.95; }
-    #countdown { color:#f1c40f; margin-top:6px; font-weight:600; }
-    #closed { color:#ff4d4d; display:none; margin-top:10px; }
-    .small { font-size:13px; color:#ccc; margin-top:8px; }
-    .subtitle { font-size:18px; color:#f39c12; margin:6px 0; font-weight:600; }
+    body { 
+      font-family: Arial, sans-serif; 
+      background:#111; 
+      color:#fff; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      min-height:100vh; 
+      margin:0; 
+      flex-direction:column;
+    }
+    .container { 
+      background: rgba(0,0,0,0.75); 
+      padding:28px; 
+      border-radius:12px; 
+      width:95%; 
+      max-width:420px; 
+      box-shadow:0 6px 30px rgba(0,0,0,0.6); 
+      text-align:center; 
+      position:relative; 
+    }
+    .logo { 
+      width:80px; 
+      height:80px; 
+      object-fit:contain; 
+      margin:0 auto 8px; 
+      display:block; 
+    }
+    input, button { 
+      width:100%; 
+      padding:12px; 
+      margin-top:10px; 
+      border-radius:8px; 
+      border:none; 
+      font-size:16px; 
+      box-sizing:border-box; 
+    }
+    button { 
+      background:#e91e63; 
+      color:#fff; 
+      font-weight:700; 
+      cursor:pointer; 
+    }
+    button:hover { 
+      opacity:0.95; 
+    }
+    #countdown { 
+      color:#f1c40f; 
+      margin-top:6px; 
+      font-weight:600; 
+    }
+    #closed { 
+      color:#ff4d4d; 
+      display:none; 
+      margin-top:10px; 
+    }
+    .small { 
+      font-size:13px; 
+      color:#ccc; 
+      margin-top:8px; 
+    }
+    .subtitle { 
+      font-size:18px; 
+      color:#f39c12; 
+      margin:6px 0; 
+      font-weight:600; 
+    }
+
+    /* Estilos pie de página de redes sociales */
+    .social-footer {
+      width:100%;
+      text-align:center;
+      margin-top:20px;
+    }
+    .social-footer a {
+      margin: 0 10px;
+      display: inline-block;
+    }
+    .social-footer img {
+      width:40px;
+      height:40px;
+      object-fit:contain;
+      cursor:pointer;
+      transition: transform 0.2s;
+    }
+    .social-footer img:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
@@ -32,7 +110,23 @@
     </form>
 
     <div id="closed">🚫 Registro cerrado. Mantente atento a próximas dinámicas.</div>
-    <div class="small">Solo serán válidos los nombres que cumplan con los 2 puntos mencionados en la dinámica.<br> 🔒¡Tu privacidad está protegida!. 🔒</div>
+    <div class="small">
+      Solo serán válidos los nombres que cumplan con los 2 puntos mencionados en la dinámica.<br> 
+      🔒¡Tu privacidad está protegida!. 🔒
+    </div>
+  </div>
+
+  <!-- Footer de redes sociales centrado -->
+  <div class="social-footer">
+    <a href="https://www.instagram.com/_alamo.sclub_?igsh=ZmcweHk1YzYxMjZp&utm_source=qr" target="_blank">
+      <img src="instagram.png" alt="Instagram">
+    </a>
+    <a href="https://chat.whatsapp.com/JWL6ZC7vLpVCy5eJIZPHDa?mode=wwc" target="_blank">
+      <img src="whatsapp.png" alt="WhatsApp">
+    </a>
+    <a href="https://www.tiktok.com/@alamo.sclub?_t=ZS-90V2bZwxppv&_r=1" target="_blank">
+      <img src="tiktok.png" alt="TikTok">
+    </a>
   </div>
 
   <script type="module">
