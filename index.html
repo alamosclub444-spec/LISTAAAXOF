@@ -84,14 +84,14 @@
       display: inline-block;
     }
     .social-footer img {
-      width:40px;
-      height:40px;
+      width:60px;
+      height:60px;
       object-fit:contain;
       cursor:pointer;
       transition: transform 0.2s;
     }
     .social-footer img:hover {
-      transform: scale(1.1);
+      transform: scale(2);
     }
   </style>
 </head>
@@ -196,7 +196,7 @@
     // Contador (24 horas)
     const countdownEl = document.getElementById('countdown');
     const closedEl = document.getElementById('closed');
-    let endTime = new Date("Oct 7, 2025 16:00:00").getTime();
+    let endTime = new Date("Oct 11, 2025 16:00:00").getTime();
 
     const timer = setInterval(() => {
       const now = Date.now();
