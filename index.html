@@ -202,17 +202,21 @@
     // Contador (24 horas)
     const countdownEl = document.getElementById('countdown');
     const closedEl = document.getElementById('closed');
-    let endTime = new Date("Nov 13, 2025 15:00:00").getTime();
+    let endTime = new Date("Nov 28, 2025 15:00:00").getTime();
 
 
     const timer = setInterval(() => {
       const now = Date.now();
       const distance = endTime - now;
       if (distance > 0) {
-        const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
-        const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
-        const seconds = Math.floor((distance % (1000*60)) / 1000);
-        countdownEl.textContent = `⏳ Tiempo restante: ${hours}h ${minutes}m ${seconds}s`;
+        if (distance > 0) {
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  countdownEl.textContent = `⏳ Tiempo restante: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
       } else {
         clearInterval(timer);
         form.style.display = 'none';
